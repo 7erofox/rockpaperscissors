@@ -1,4 +1,4 @@
-const hands = ['rock', 'paper', 'scissors'];
+const possibleSelections = ['rock', 'paper', 'scissors'];
 const playerWinsMessage = "Player wins and computer loses";
 const computerWinsMessage = "Computer wins and player loses"; 
 const tieMessage = "It's a draw";
@@ -9,14 +9,14 @@ let playerScore = 0;
 let computerScore = 0;
 
 function computerPlay() {
-    const handIndex = Math.floor(Math.random() * hands.length)
-    return hands[handIndex];
+    const handIndex = Math.floor(Math.random() * possibleSelections.length)
+    return possibleSelections[handIndex];
 }
 
 function askPlayerForSelection() {
     var playerSelection = window.prompt("Rock, Paper or Scissors?").toLowerCase();
     
-    while (!hands.includes(playerSelection)) {
+    while (!possibleSelections.includes(playerSelection)) {
         console.error("Invalid selection.")
         var playerSelection = window.prompt("Rock, Paper or Scissors?").toLowerCase();
     }
@@ -24,36 +24,44 @@ function askPlayerForSelection() {
     return playerSelection;
 }
 
+function recordWinner(winner) {
+    if (winner === "player") {
+        playerScore++;
+        console.log(playerWinsMessage);
+    }
+    else if (winner === "computer") {
+        computerScore++;
+        console.log(computerWinsMessage);
+    }
+    else {
+        console.log(tieMessage);
+    }
+}
+
 function playRound() {
     var computerSelection = computerPlay();
     var playerSelection = askPlayerForSelection();
   
     if (playerSelection === 'rock' && computerSelection === 'scissors') {
-        playerScore++;
-        console.log(playerWinsMessage);
-    } else if (playerSelection === 'rock' && computerSelection === 'paper') {
-        computerScore++;
-        console.log(computerWinsMessage);
-    } else if (playerSelection === 'paper' && computerSelection === 'scissors') {
-        computerScore++;
-        console.log(computerWinsMessage);
+        recordWinner('player')   
     } else if (playerSelection === 'paper' && computerSelection === 'rock') {
-        playerScore++;
-        console.log(playerWinsMessage);
+        recordWinner('player')
     } else if (playerSelection === 'scissors' && computerSelection === 'paper') {
-        playerScore++;
-        console.log(playerWinsMessage);
+        recordWinner('player')
+    } else if (playerSelection === 'rock' && computerSelection === 'paper') {
+        recordWinner('computer')
+    } else if (playerSelection === 'paper' && computerSelection === 'scissors') {
+        recordWinner('computer')
     } else if (playerSelection === 'scissors' && computerSelection === 'rock') {
-        computerScore++;
-        console.log(computerWinsMessage);
+        recordWinner('computer')
     } else if (playerSelection === computerSelection) {
-        console.log(tieMessage);
+        recordWinner('none')
     }
 }
 
 while(roundsPlayed < 5) {
     roundsPlayed++;
-    var winner = playRound();
+    playRound();
 }
 
 if (playerScore > computerScore) {
